@@ -94,7 +94,7 @@ public class ItemActivity extends AppCompatActivity {
                 if (name.length() > 0 && price.length() > 0 && description.length() > 0 && selected.id > 0) {
                     AppDatabase db = AppDatabase.getInstance(ItemActivity.this);
                     Item item = new Item(name, Float.parseFloat(price), description);
-                    db.insertItems(item);
+                    db.insertItems(item, selected.id);
                     mAdapter.add(item);
                     mAdapter.notifyDataSetChanged();
                     dialog.dismiss();

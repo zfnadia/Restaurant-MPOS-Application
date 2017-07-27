@@ -312,7 +312,7 @@ public class BillActivity extends AppCompatActivity {
                     for(Item item : mAddedItemsMap.values()){
                         db.insertBillItem(billId, item);
                     }
-                    
+
                     dialog.dismiss();
                 }
             }

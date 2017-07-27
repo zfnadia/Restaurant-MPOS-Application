@@ -17,7 +17,7 @@ import java.util.List;
 public class AppDatabase extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 4;
-    public static final String DATABASE_NAME = "myapp11.db";
+    public static final String DATABASE_NAME = "myapp12.db";
 
     private static AppDatabase instance = null; // = new AppDatabase()
     private final Context context;
@@ -68,11 +68,12 @@ public class AppDatabase extends SQLiteOpenHelper {
         return categoryItems;
     }
 
-    public void insertItems(Item item) {
+    public void insertItems(Item item, int id) {
         ContentValues values = new ContentValues();
         values.put("name", item.getName());
         values.put("price", item.getPrice());
         values.put("description", item.getDescription());
+        values.put("item_category_id", id);
 
         this.getWritableDatabase().insert("item", null, values);
     }
@@ -176,6 +177,7 @@ public class AppDatabase extends SQLiteOpenHelper {
             db.execSQL(readFromAssets(this.context, "sql/availability.ddl"));
             db.execSQL(readFromAssets(this.context, "sql/employee.ddl"));
             db.execSQL(readFromAssets(this.context, "sql/bill.ddl"));
+            db.execSQL(readFromAssets(this.context, "sql/bill_item.ddl"));
         } catch (IOException e) {
             e.printStackTrace();
         }

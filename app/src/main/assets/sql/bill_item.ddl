@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS bill_item(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    bill_id INTEGER NOT NULL,
+    item_id INTEGER NOT NULL,
+    rate FLOAT NOT NULL,
+    quantity INTEGER NOT NULL,
+    FOREIGN KEY(bill_id) REFERENCES bill(id),
+    FOREIGN KEY(item_id) REFERENCES item(id)
+);

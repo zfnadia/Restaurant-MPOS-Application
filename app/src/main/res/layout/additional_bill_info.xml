@@ -31,13 +31,6 @@
         android:hint="Servers Name" />
 
     <EditText
-        android:id="@+id/editVat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:hint="Vat" />
-
-    <EditText
         android:id="@+id/editDiscount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

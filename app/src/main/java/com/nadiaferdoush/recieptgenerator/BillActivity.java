@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
-import android.support.annotation.StringDef;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -28,18 +27,13 @@ import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
 
-import java.sql.Types;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static android.R.attr.name;
-import static android.R.attr.password;
-import static android.R.attr.phoneNumber;
-import static java.lang.Integer.parseInt;
 
 
 public class BillActivity extends AppCompatActivity {
@@ -49,7 +43,9 @@ public class BillActivity extends AppCompatActivity {
     TagAdapter<Item> addedItemsAdapter;
     List<Item> mAddedItems = new ArrayList<>();
     Map<Integer, Item> mAddedItemsMap = new HashMap<>();
+    float netAmount;
     TextView mNetItemPriceView;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,11 +86,10 @@ public class BillActivity extends AppCompatActivity {
         });
 
         final AppDatabase db = AppDatabase.getInstance(this);
-        List<Item> items = db.getItems(null);
 
         // All items grid display
         itemGridView = (GridView) findViewById(R.id.grid);
-        mAdapter = new ItemGridAdapter(this, R.layout.bill_grid_item, items);
+        mAdapter = new ItemGridAdapter(this, R.layout.bill_grid_item, new ArrayList<Item>());
         itemGridView.setAdapter(mAdapter);
 
         itemGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -125,7 +120,7 @@ public class BillActivity extends AppCompatActivity {
         });
 
 
-        SearchView searchView = (SearchView) findViewById(R.id.search_menu);
+        searchView = (SearchView) findViewById(R.id.search_menu);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -144,12 +139,25 @@ public class BillActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        final AppDatabase db = AppDatabase.getInstance(this);
+        String text = searchView.getQuery().toString();
+        List<Item> items = db.getItems(text.length() > 0 ? text : null);
+        mAdapter.clear();
+        mAdapter.addAll(items);
+        mAdapter.notifyDataSetChanged();
+    }
+
     @SuppressLint("DefaultLocale")
     private void refreshNetPrice(Collection<Item> items) {
         float netItemPrice = 0;
         for (Item item : items) {
             netItemPrice += item.count * item.getPrice();
         }
+        netAmount = netItemPrice;
         mNetItemPriceView.setText(String.format("%.2f", netItemPrice));
     }
 
@@ -276,20 +284,37 @@ public class BillActivity extends AppCompatActivity {
                 float paidAmount = Float.parseFloat(((EditText) v.findViewById(R.id.editPaidAmount)).getText().toString());
                 int tableNumber = Integer.parseInt(((EditText) v.findViewById(R.id.editTableNumber)).getText().toString());
                 String waiter = ((EditText) v.findViewById(R.id.editServerName)).getText().toString();
-                float vatPt = Float.parseFloat(((EditText) v.findViewById(R.id.editVat)).getText().toString());
                 float discountPt = Float.parseFloat(((EditText) v.findViewById(R.id.editDiscount)).getText().toString());
 
+                float vatPt = 15;
+                float vat = (vatPt / 100);
+                float discount = (discountPt / 100);
+                float grossAmount = (netAmount - discount) + vat;
+
+                float changeAmount = paidAmount - grossAmount;
+
+                Calendar calendar = Calendar.getInstance();
+                SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MMMM-dd HH:mm:ss ");
+                String strDate = mdformat.format(calendar.getTime());
+                String timeCreated = strDate;
+
                 int selected = spinner.getSelectedItemPosition();
+                int paymentType = selected;
 
                 if (paidAmount > 0 && tableNumber > 0 && waiter.length() > 0
-                        && vatPt > 0 && discountPt > 0 && selected > 0) {
+                        && discountPt > 0 && selected > 0) {
                     AppDatabase db = AppDatabase.getInstance(BillActivity.this);
+
                     Bill bill = new Bill(grossAmount, paidAmount, netAmount, changeAmount, vatPt, discountPt, timeCreated,
-                                tableNumber, paymentType);
-                    db.insertInBill(bill);
+                            tableNumber, paymentType);
+                    int billId = (int) db.insertInBill(bill);
+
+                    for(Item item : mAddedItemsMap.values()){
+                        db.insertBillItem(billId, item);
+                    }
+                    
                     dialog.dismiss();
                 }
-
             }
         });
     }

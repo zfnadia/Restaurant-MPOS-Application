@@ -2,7 +2,9 @@
 <resources>
     <color name="colorPrimary">#00B16A</color>
     <color name="colorPrimaryDark">#26A65B</color>
-    <color name="colorAccent">#FFF</color>
+    <color name="colorAccent">#34495E</color>
+    <color name="fabBackground">#FFF</color>
+
 </resources>
 
     <!--#26A65B_jungle green-->

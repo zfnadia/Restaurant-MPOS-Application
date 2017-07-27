@@ -17,7 +17,7 @@ import java.util.List;
 public class AppDatabase extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 4;
-    public static final String DATABASE_NAME = "myapp10.db";
+    public static final String DATABASE_NAME = "myapp11.db";
 
     private static AppDatabase instance = null; // = new AppDatabase()
     private final Context context;
@@ -141,7 +141,7 @@ public class AppDatabase extends SQLiteOpenHelper {
         return employees;
     }
 
-    public void insertInBill(Bill bill) {
+    public long insertInBill(Bill bill) {
         ContentValues values = new ContentValues();
         values.put("gross_amount", bill.getGrossAmount());
         values.put("paid_amount", bill.getPaidAmount());
@@ -153,8 +153,20 @@ public class AppDatabase extends SQLiteOpenHelper {
         values.put("table_number", bill.getTableNumber());
         values.put("payment_method", bill.getPaymentType());
 
-        this.getWritableDatabase().insert("bill", null, values);
+        return this.getWritableDatabase().insert("bill", null, values);
     }
+
+    public void insertBillItem(int billId, Item item){
+        ContentValues values = new ContentValues();
+        values.put("bill_id", billId);
+        values.put("item_id", item.id);
+        values.put("rate", item.getPrice());
+        values.put("quantity", item.count);
+
+        this.getWritableDatabase().insert("bill_item", null, values);
+
+    }
+
 
     public void onCreate(SQLiteDatabase db) {
         try {

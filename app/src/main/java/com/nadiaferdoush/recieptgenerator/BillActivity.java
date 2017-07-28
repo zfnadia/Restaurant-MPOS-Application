@@ -294,22 +294,22 @@ public class BillActivity extends AppCompatActivity {
                 float changeAmount = paidAmount - grossAmount;
 
                 Calendar calendar = Calendar.getInstance();
-                SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MMMM-dd HH:mm:ss ");
-                String strDate = mdformat.format(calendar.getTime());
+                SimpleDateFormat mdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String strDate = mdFormat.format(calendar.getTime());
                 String timeCreated = strDate;
 
                 int selected = spinner.getSelectedItemPosition();
                 int paymentType = selected;
 
                 if (paidAmount > 0 && tableNumber > 0 && waiter.length() > 0
-                        && discountPt > 0 && selected > 0) {
+                        && discountPt >= 0 && selected > 0) {
                     AppDatabase db = AppDatabase.getInstance(BillActivity.this);
 
                     Bill bill = new Bill(grossAmount, paidAmount, netAmount, changeAmount, vatPt, discountPt, timeCreated,
                             tableNumber, paymentType);
                     int billId = (int) db.insertInBill(bill);
 
-                    for(Item item : mAddedItemsMap.values()){
+                    for (Item item : mAddedItemsMap.values()) {
                         db.insertBillItem(billId, item);
                     }
 

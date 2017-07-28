@@ -7,5 +7,4 @@
         android:orderInCategory="100"
         android:title="Main Menu"
         app:showAsAction="never" />
-
 </menu>

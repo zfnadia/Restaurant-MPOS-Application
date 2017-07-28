@@ -8,10 +8,15 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -20,9 +25,11 @@ import android.widget.TextView;
 
 import java.util.List;
 
+
 public class ItemActivity extends AppCompatActivity {
 
     ArrayAdapter<Item> mAdapter;
+    private Item selectedItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +46,17 @@ public class ItemActivity extends AppCompatActivity {
         mAdapter = new ItemListAdapter(this, R.layout.item_list, item);
         itemList.setAdapter(mAdapter);
 
+        itemList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                if (mActionMode != null)
+                    mActionMode.finish();
+                startSupportActionMode(mActionModeCallback);
+                selectedItem = mAdapter.getItem(position);
+                return true;
+            }
+        });
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,6 +66,51 @@ public class ItemActivity extends AppCompatActivity {
 
         });
     }
+
+    private ActionMode mActionMode;
+    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+
+        // Called when the action mode is created; startActionMode() was called
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            // Inflate a menu resource providing context menu items
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.context_menu, menu);
+            return true;
+        }
+
+        // Called each time the action mode is shown. Always called after onCreateActionMode, but
+        // may be called multiple times if the mode is invalidated.
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            mActionMode = mode;
+            return false; // Return false if nothing is done
+        }
+
+        // Called when the user selects a contextual menu item
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.action_delete:
+                    AppDatabase database = AppDatabase.getInstance(ItemActivity.this);
+                    database.getWritableDatabase().delete("item", "id = ?", new String[]{String.valueOf(selectedItem.id)});
+                    mAdapter.remove(selectedItem);
+                    mAdapter.notifyDataSetChanged();
+                    if (mActionMode != null)
+                        mActionMode.finish();
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        // Called when the user exits the action mode
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            //mActionMode = null;
+        }
+    };
+
 
     private void showNameDialog() {
 
@@ -64,7 +127,7 @@ public class ItemActivity extends AppCompatActivity {
         cat.id = 0;
         categories.add(0, cat);
 
-        ArrayAdapter<Category> spinnerAdapter = new ArrayAdapter<Category>(this, android.R.layout.simple_spinner_dropdown_item, categories);
+        ArrayAdapter<Category> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, categories);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerAdapter);
 
@@ -128,6 +191,4 @@ public class ItemActivity extends AppCompatActivity {
             return v;
         }
     }
-
-
 }

@@ -5,9 +5,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.DatabaseUtils;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.support.v4.database.DatabaseUtilsCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -52,9 +56,37 @@ public class BillActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bill);
 
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean loggedIn = pref.getBoolean("logged_in", false);
+        /*
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putBoolean("logged_in", true);
+        */
+
+        if (!loggedIn){
+
+            AppDatabase db = AppDatabase.getInstance(this);
+            long count = DatabaseUtils.queryNumEntries(db.getReadableDatabase(), "employee");
+            if (count > 0){
+                startActivity(new Intent(this, LoginActivity.class));
+            } else {
+                startActivity(new Intent(this, CreateAccountActivity.class));
+            }
+            finish();
+        }
+
         itemGridView = (GridView) findViewById(R.id.grid);
         mNetItemPriceView = (TextView) findViewById(R.id.net_item_price);
 
+        /*
+
+        - check if logged in, if yes, do nothing
+        - if no
+        - if employee count > 0, if yes, finish this activity, and show login activity
+        - if no, show employee add activity
+
+
+         */
 
         // Selected items display
         TagFlowLayout itemList = (TagFlowLayout) findViewById(R.id.id_flowLayout);

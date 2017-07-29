@@ -25,7 +25,7 @@
         android:onClick="goToEditCategory"
         android:text="Manage Menu Category"
         android:textAllCaps="false"
-        android:textColor="@color/colorAccent"
+        android:textColor="#FFF"
         android:textSize="20sp"
         android:textStyle="normal" />
 
@@ -39,7 +39,7 @@
         android:onClick="goToEditItem"
         android:text="Edit Menu Items"
         android:textAllCaps="false"
-        android:textColor="@color/colorAccent"
+        android:textColor="#FFF"
         android:textSize="20sp"
         android:textStyle="normal" />
 
@@ -52,7 +52,20 @@
         android:onClick="goToManageEmployee"
         android:text="Manage Employees"
         android:textAllCaps="false"
-        android:textColor="@color/colorAccent"
+        android:textColor="#FFF"
+        android:textSize="20sp"
+        android:textStyle="normal"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="#00B16A"
+        android:onClick="logOut"
+        android:text="Log Out"
+        android:textAllCaps="false"
+        android:textColor="#FFF"
         android:textSize="20sp"
         android:textStyle="normal" />
 

@@ -1,6 +1,7 @@
 package com.nadiaferdoush.recieptgenerator;
 
 public class Employee {
+    public int id;
     private String name;
     private String birthDate;
     private String address;

@@ -12,14 +12,24 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".BillActivity"
-            android:theme="@style/AppTheme"
-            android:label="Create Bill">
+            android:label="Create Bill"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".LoginActivity"
+            android:label="Log In"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".CreateAccountActivity"
+            android:label="Create Manager Account" />
+
         <activity
             android:name=".CategoryItemActivity"
             android:label="Menu Categories"
@@ -28,26 +38,13 @@
             android:name=".EmployeeInfoActivity"
             android:label="Employee Information"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".MenuActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".ItemActivity"
             android:label="All Items"
             android:theme="@style/AppTheme.NoActionBar" />
-
-        <!--<activity-->
-            <!--android:name=".ItemActivity"-->
-            <!--android:label="All Items"-->
-            <!--android:theme="@style/AppTheme.NoActionBar">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        <!--</activity>-->
 
     </application>
 

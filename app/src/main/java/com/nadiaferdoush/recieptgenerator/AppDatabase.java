@@ -130,10 +130,11 @@ public class AppDatabase extends SQLiteOpenHelper {
                 String email = cursor.getString(cursor.getColumnIndex("email"));
                 String password = cursor.getString(cursor.getColumnIndex("password"));
                 String phoneNumber = cursor.getString(cursor.getColumnIndex("phone_number"));
-                int salary = Integer.parseInt(cursor.getString(cursor.getColumnIndex("salary")));
-                int type = Integer.parseInt(cursor.getString(cursor.getColumnIndex("type")));
+                int salary = cursor.getInt(cursor.getColumnIndex("salary"));
+                int type = cursor.getInt(cursor.getColumnIndex("type"));
 
                 Employee employee = new Employee(name, birthDate, address, email, password, phoneNumber, salary, type);
+                employee.id = cursor.getInt(cursor.getColumnIndex("id"));
                 employees.add(employee);
 
             } while (cursor.moveToNext());

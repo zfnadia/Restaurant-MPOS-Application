@@ -1,4 +1,4 @@
-package com.nadiaferdoush.recieptgenerator;
+package com.nadiaFerdoush.recieptgenerator;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -11,10 +11,10 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
-import android.support.v4.database.DatabaseUtilsCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -189,6 +189,7 @@ public class BillActivity extends AppCompatActivity {
         for (Item item : items) {
             netItemPrice += item.count * item.getPrice();
         }
+
         netAmount = netItemPrice;
         mNetItemPriceView.setText(String.format("%.2f", netItemPrice));
     }
@@ -276,6 +277,32 @@ public class BillActivity extends AppCompatActivity {
         showNameDialog();
     }
 
+    private void showOpenBillDialog(final int billId) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Bill #" + billId);
+        builder.setMessage(Html.fromHtml("Bill <b>#" + billId + "</b>"));
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+
+                Intent invoiceIntent = new Intent(BillActivity.this, InvoiceActivity.class);
+                invoiceIntent.putExtra("bill_id", billId);
+                startActivity(invoiceIntent);
+
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+
+            }
+        }).create().show();
+
+
+    }
+
     private void showNameDialog() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -321,7 +348,9 @@ public class BillActivity extends AppCompatActivity {
                 float vatPt = 15;
                 float vat = (vatPt / 100);
                 float discount = (discountPt / 100);
-                float grossAmount = (netAmount - discount) + vat;
+                float afterVat = vat * netAmount;
+                float afterDiscount = discount * netAmount;
+                float grossAmount = (netAmount - afterDiscount) + afterVat;
 
                 float changeAmount = paidAmount - grossAmount;
 
@@ -346,6 +375,8 @@ public class BillActivity extends AppCompatActivity {
                     }
 
                     dialog.dismiss();
+
+                    showOpenBillDialog(billId);
                 }
             }
         });

@@ -1,4 +1,4 @@
-package com.nadiaferdoush.recieptgenerator;
+package com.nadiaFerdoush.recieptgenerator;
 
 import android.app.Dialog;
 import android.content.Context;

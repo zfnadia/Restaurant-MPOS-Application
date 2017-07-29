@@ -1,4 +1,4 @@
-package com.nadiaferdoush.recieptgenerator;
+package com.nadiaFerdoush.recieptgenerator;
 
 public class Category {
     private String name;

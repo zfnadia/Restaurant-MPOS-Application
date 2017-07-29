@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.nadiaferdoush.recieptgenerator">
+    package="com.nadiaFerdoush.recieptgenerator">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -20,16 +20,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".LoginActivity"
             android:label="Log In"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".CreateAccountActivity"
             android:label="Create Manager Account" />
-
         <activity
             android:name=".CategoryItemActivity"
             android:label="Menu Categories"
@@ -45,7 +42,11 @@
             android:name=".ItemActivity"
             android:label="All Items"
             android:theme="@style/AppTheme.NoActionBar" />
-
+        <activity
+            android:name=".InvoiceActivity"
+            android:label="Invoice"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".BillListActivity"></activity>
     </application>
 
 </manifest>

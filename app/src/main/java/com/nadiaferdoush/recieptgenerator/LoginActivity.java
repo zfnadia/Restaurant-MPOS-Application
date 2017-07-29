@@ -1,9 +1,8 @@
-package com.nadiaferdoush.recieptgenerator;
+package com.nadiaFerdoush.recieptgenerator;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.DatabaseUtils;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package com.nadiaferdoush.recieptgenerator;
+package com.nadiaFerdoush.recieptgenerator;
 
 import android.content.Intent;
 import android.content.SharedPreferences;

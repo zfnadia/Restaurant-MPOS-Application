@@ -1,4 +1,4 @@
-package com.nadiaferdoush.recieptgenerator;
+package com.nadiaFerdoush.recieptgenerator;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -103,6 +103,80 @@ public class AppDatabase extends SQLiteOpenHelper {
 
         return items;
     }
+
+    public List<Item> getBillItems(int billId) {
+
+        List<Item> items = new ArrayList<>();
+
+        Cursor cursor = getReadableDatabase().rawQuery("SELECT i.name, bi.rate, bi.quantity FROM bill_item bi JOIN item i ON bi.item_id = i.id WHERE bi.bill_id = ?", new String[]{String.valueOf(billId)});
+
+        if (cursor.moveToFirst()) {
+            do {
+
+                String itemName = cursor.getString(0);
+                float itemPrice = cursor.getFloat(1);
+
+                Item item = new Item(itemName, itemPrice, "");
+                item.count = cursor.getInt(2);
+                items.add(item);
+
+            } while (cursor.moveToNext());
+        }
+
+        return items;
+    }
+
+    public List<Bill> getBills() {
+
+        List<Bill> bills = new ArrayList<>();
+
+        Cursor cursor = getReadableDatabase().rawQuery("SELECT * FROM bill", null);
+
+        if (cursor.moveToFirst()) {
+            do {
+
+                float grossAmount = cursor.getFloat(0);
+                float netAmount = cursor.getFloat(1);
+                float vatPt = cursor.getFloat(2);
+                float discountPt = cursor.getFloat(3);
+                float paidAmount= cursor.getFloat(4);
+                float changeAmount = cursor.getFloat(5);
+
+                Bill bill = new Bill(grossAmount, paidAmount, netAmount, changeAmount, vatPt, discountPt, "", 0, 0);
+                bills.add(bill);
+
+            } while (cursor.moveToNext());
+        }
+
+        return bills;
+    }
+
+    public Bill getBill(int billId) {
+
+        Bill bill = null;
+
+        Cursor cursor = getReadableDatabase().rawQuery("SELECT * FROM bill WHERE id = ?", new String[]{String.valueOf(billId)});
+
+        if (cursor.moveToFirst()) {
+
+            float grossAmount = cursor.getFloat(cursor.getColumnIndex("gross_amount"));
+            float vatPt = cursor.getFloat(cursor.getColumnIndex("vat_pt"));
+            float discountPt = cursor.getFloat(cursor.getColumnIndex("discount_pt"));
+            float netAmount = cursor.getFloat(cursor.getColumnIndex("net_amount"));
+            float paidAmount = cursor.getFloat(cursor.getColumnIndex("paid_amount"));
+            float changeAmount = cursor.getFloat(cursor.getColumnIndex("change_amount"));
+            String creationTime = cursor.getString(cursor.getColumnIndex("creation_time"));
+            int tableNumber = cursor.getInt(cursor.getColumnIndex("table_number"));
+            int paymentMethod = cursor.getInt(cursor.getColumnIndex("payment_method"));
+
+
+            bill = new Bill(grossAmount, paidAmount, netAmount, changeAmount, vatPt, discountPt, creationTime, tableNumber, paymentMethod);
+
+        }
+
+        return bill;
+    }
+
 
     public void insertEmployee(Employee employee) {
         ContentValues values = new ContentValues();

@@ -1,6 +1,4 @@
-package com.nadiaferdoush.recieptgenerator;
-
-import static android.R.attr.name;
+package com.nadiaFerdoush.recieptgenerator;
 
 public class Bill {
     private float grossAmount;

@@ -135,14 +135,12 @@ public class AppDatabase extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
 
-                float grossAmount = cursor.getFloat(0);
-                float netAmount = cursor.getFloat(1);
-                float vatPt = cursor.getFloat(2);
-                float discountPt = cursor.getFloat(3);
-                float paidAmount= cursor.getFloat(4);
-                float changeAmount = cursor.getFloat(5);
+                int id = cursor.getInt(cursor.getColumnIndex("id"));
+                String creationTime = cursor.getString(cursor.getColumnIndex("creation_time"));
+                float netAmount = cursor.getFloat(cursor.getColumnIndex("net_amount"));
 
-                Bill bill = new Bill(grossAmount, paidAmount, netAmount, changeAmount, vatPt, discountPt, "", 0, 0);
+                Bill bill = new Bill(0, 0, netAmount, 0, 0, 0, creationTime, 0, 0);
+                bill.id = id;
                 bills.add(bill);
 
             } while (cursor.moveToNext());

@@ -62,11 +62,24 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
         android:backgroundTint="#00B16A"
-        android:onClick="logOut"
+        android:text="All Bills"
+        android:textAllCaps="false"
+        android:textColor="#FFF"
+        android:textSize="20sp"
+        android:textStyle="normal"
+        android:onClick="goToAllBills" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="#00B16A"
         android:text="Log Out"
         android:textAllCaps="false"
         android:textColor="#FFF"
         android:textSize="20sp"
-        android:textStyle="normal" />
+        android:textStyle="normal"
+        android:onClick="logOut" />
 
 </LinearLayout>

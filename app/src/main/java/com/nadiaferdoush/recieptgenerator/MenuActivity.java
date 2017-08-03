@@ -1,5 +1,6 @@
 package com.nadiaFerdoush.recieptgenerator;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -13,6 +14,20 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean loggedIn = pref.getBoolean("logged_in", false);
+
+        if (!loggedIn) {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+            return;
+        }
     }
 
     public void goToEditCategory(View v) {
@@ -35,6 +50,13 @@ public class MenuActivity extends AppCompatActivity {
         editor.putBoolean("logged_in", false);
         editor.commit();
         finish();
-        startActivity(new Intent(this, LoginActivity.class));
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
+
+    public void goToAllBills(View v) {
+        Intent intent = new Intent(this, AllBillsActivity.class);
+        startActivity(intent);
     }
 }

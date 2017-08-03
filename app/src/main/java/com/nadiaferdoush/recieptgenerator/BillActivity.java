@@ -47,8 +47,8 @@ public class BillActivity extends AppCompatActivity {
     TagAdapter<Item> addedItemsAdapter;
     List<Item> mAddedItems = new ArrayList<>();
     Map<Integer, Item> mAddedItemsMap = new HashMap<>();
-    float netAmount;
-    TextView mNetItemPriceView;
+    float grossAmount;
+    TextView mGrossItemPriceView;
     private SearchView searchView;
 
     @Override
@@ -76,7 +76,7 @@ public class BillActivity extends AppCompatActivity {
         }
 
         itemGridView = (GridView) findViewById(R.id.grid);
-        mNetItemPriceView = (TextView) findViewById(R.id.net_item_price);
+        mGrossItemPriceView = (TextView) findViewById(R.id.gross_item_price);
 
         /*
 
@@ -105,7 +105,7 @@ public class BillActivity extends AppCompatActivity {
                 }
 
                 Collection<Item> items = mAddedItemsMap.values();
-                refreshNetPrice(items);
+                refreshGrossPrice(items);
 
                 mAddedItems.clear();
                 mAddedItems.addAll(items);
@@ -142,7 +142,7 @@ public class BillActivity extends AppCompatActivity {
                 Collection<Item> items = mAddedItemsMap.values();
                 mAddedItems.clear();
                 mAddedItems.addAll(items);
-                refreshNetPrice(items);
+                refreshGrossPrice(items);
                 addedItemsAdapter.notifyDataChanged();
 
                 mAdapter.notifyDataSetChanged();
@@ -175,6 +175,16 @@ public class BillActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean loggedIn = pref.getBoolean("logged_in", false);
+
+        if (!loggedIn) {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+            return;
+        }
+
+
         final AppDatabase db = AppDatabase.getInstance(this);
         String text = searchView.getQuery().toString();
         List<Item> items = db.getItems(text.length() > 0 ? text : null);
@@ -184,14 +194,14 @@ public class BillActivity extends AppCompatActivity {
     }
 
     @SuppressLint("DefaultLocale")
-    private void refreshNetPrice(Collection<Item> items) {
-        float netItemPrice = 0;
+    private void refreshGrossPrice(Collection<Item> items) {
+        float grossItemPrice = 0;
         for (Item item : items) {
-            netItemPrice += item.count * item.getPrice();
+            grossItemPrice += item.count * item.getPrice();
         }
 
-        netAmount = netItemPrice;
-        mNetItemPriceView.setText(String.format("%.2f", netItemPrice));
+        grossAmount = grossItemPrice;
+        mGrossItemPriceView.setText(String.format("%.2f", grossItemPrice));
     }
 
     @Override
@@ -282,8 +292,8 @@ public class BillActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle("Bill #" + billId);
-        builder.setMessage(Html.fromHtml("Bill <b>#" + billId + "</b>"));
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setMessage(Html.fromHtml("Bill <b>#" + billId + "</b> created."));
+        builder.setPositiveButton("SHOW", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
 
@@ -319,7 +329,7 @@ public class BillActivity extends AppCompatActivity {
         paymentTypes.add("Credit Card");
         paymentTypes.add("Debit Card");
 
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, paymentTypes);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, paymentTypes);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerAdapter);
 
@@ -348,11 +358,11 @@ public class BillActivity extends AppCompatActivity {
                 float vatPt = 15;
                 float vat = (vatPt / 100);
                 float discount = (discountPt / 100);
-                float afterVat = vat * netAmount;
-                float afterDiscount = discount * netAmount;
-                float grossAmount = (netAmount - afterDiscount) + afterVat;
+                float afterVat = vat * grossAmount;
+                float afterDiscount = discount * grossAmount;
+                float netAmount = (grossAmount - afterDiscount) + afterVat;
 
-                float changeAmount = paidAmount - grossAmount;
+                float changeAmount = paidAmount - netAmount;
 
                 Calendar calendar = Calendar.getInstance();
                 SimpleDateFormat mdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

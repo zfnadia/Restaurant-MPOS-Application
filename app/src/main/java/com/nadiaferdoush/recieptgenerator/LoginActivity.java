@@ -48,4 +48,16 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        AppDatabase db = AppDatabase.getInstance(this);
+        long count = DatabaseUtils.queryNumEntries(db.getReadableDatabase(), "employee");
+        if (count < 1){
+            startActivity(new Intent(this, CreateAccountActivity.class));
+            finish();
+        }
+    }
 }

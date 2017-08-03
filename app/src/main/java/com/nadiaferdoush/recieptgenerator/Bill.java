@@ -1,6 +1,7 @@
 package com.nadiaFerdoush.recieptgenerator;
 
 public class Bill {
+    public int id;
     private float grossAmount;
     private float paidAmount;
     private float netAmount;

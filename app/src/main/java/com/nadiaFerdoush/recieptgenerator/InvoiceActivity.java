@@ -35,7 +35,7 @@ public class InvoiceActivity extends AppCompatActivity {
         Bill bill = AppDatabase.getInstance(this).getBill(billId);
 
         TextView grossAmountView = (TextView) findViewById(R.id.gross_amount);
-        grossAmountView.setText(String.format("%.2f", bill.getNetAmount()));
+        grossAmountView.setText(String.format("%.2f", bill.getGrossAmount()));
 
         TextView vatAMountView = (TextView) findViewById(R.id.vat_amount);
         vatAMountView.setText(String.format("%.2f", bill.getVatPt()));
@@ -44,7 +44,7 @@ public class InvoiceActivity extends AppCompatActivity {
         discountAmountView.setText(String.format("%.2f", bill.getDiscountPt()));
 
         TextView netAmountView = (TextView) findViewById(R.id.net_amount);
-        netAmountView.setText(String.format("%.2f", bill.getGrossAmount()));
+        netAmountView.setText(String.format("%.2f", bill.getNetAmount()));
 
         TextView paidAmountView = (TextView) findViewById(R.id.paid_amount);
         paidAmountView.setText(String.format("%.2f", bill.getPaidAmount()));

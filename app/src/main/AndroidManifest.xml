@@ -7,13 +7,10 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="Blue Jays Inn POS"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".BillActivity"
-            android:label="Create Bill"
-            android:theme="@style/AppTheme">
+        <activity android:name=".BillActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,7 +43,8 @@
             android:name=".InvoiceActivity"
             android:label="Invoice"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".BillListActivity"></activity>
+        <activity android:name=".AllBillsActivity"
+            android:label="All Bills" />
     </application>
 
 </manifest>

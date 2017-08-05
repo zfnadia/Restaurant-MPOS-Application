@@ -64,7 +64,7 @@ public class AllBillsActivity extends AppCompatActivity {
             billCreationView.setText(bill.getTimeCreated());
 
             TextView netAmountView = (TextView) v.findViewById(R.id.net_amount);
-            netAmountView.setText(String.format("%.2f", bill.getNetAmount()));
+            netAmountView.setText("BDT " + String.format("%.2f", bill.getNetAmount()));
             return v;
         }
     }

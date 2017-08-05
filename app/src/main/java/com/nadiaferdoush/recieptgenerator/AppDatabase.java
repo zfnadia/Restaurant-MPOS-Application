@@ -51,7 +51,7 @@ public class AppDatabase extends SQLiteOpenHelper {
 
     public List<Category> getCategoryItems() {
         List<Category> categoryItems = new ArrayList<>();
-        Cursor cursor = getReadableDatabase().rawQuery("SELECT * FROM item_category", new String[]{});
+        Cursor cursor = getReadableDatabase().rawQuery("SELECT * FROM item_category ORDER BY name COLLATE NOCASE ASC", new String[]{});
         if (cursor.moveToFirst()) {
             do {
 
@@ -83,7 +83,7 @@ public class AppDatabase extends SQLiteOpenHelper {
         List<Item> items = new ArrayList<>();
         Cursor cursor = null;
         if (searchText == null || searchText.length() < 1)
-            cursor = getReadableDatabase().rawQuery("SELECT * FROM item", new String[]{});
+            cursor = getReadableDatabase().rawQuery("SELECT * FROM item ORDER BY name COLLATE NOCASE ASC", new String[]{});
         else
             cursor = getReadableDatabase().rawQuery("SELECT * FROM item WHERE name LIKE ?", new String[]{"%" + searchText + "%"});
 
@@ -130,7 +130,7 @@ public class AppDatabase extends SQLiteOpenHelper {
 
         List<Bill> bills = new ArrayList<>();
 
-        Cursor cursor = getReadableDatabase().rawQuery("SELECT * FROM bill", null);
+        Cursor cursor = getReadableDatabase().rawQuery("SELECT * FROM bill ORDER BY datetime(creation_time) DESC", null);
 
         if (cursor.moveToFirst()) {
             do {
@@ -192,7 +192,7 @@ public class AppDatabase extends SQLiteOpenHelper {
 
     public List<Employee> getEmployees() {
         List<Employee> employees = new ArrayList<>();
-        Cursor cursor = getReadableDatabase().rawQuery("SELECT * FROM employee", new String[]{});
+        Cursor cursor = getReadableDatabase().rawQuery("SELECT * FROM employee ORDER BY name COLLATE NOCASE ASC", new String[]{});
         if (cursor.moveToFirst()) {
             do {
 
@@ -230,7 +230,7 @@ public class AppDatabase extends SQLiteOpenHelper {
         return this.getWritableDatabase().insert("bill", null, values);
     }
 
-    public void insertBillItem(int billId, Item item){
+    public void insertBillItem(int billId, Item item) {
         ContentValues values = new ContentValues();
         values.put("bill_id", billId);
         values.put("item_id", item.id);

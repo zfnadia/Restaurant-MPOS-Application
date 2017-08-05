@@ -63,11 +63,11 @@ public class BillActivity extends AppCompatActivity {
         editor.putBoolean("logged_in", true);
         */
 
-        if (!loggedIn){
+        if (!loggedIn) {
 
             AppDatabase db = AppDatabase.getInstance(this);
             long count = DatabaseUtils.queryNumEntries(db.getReadableDatabase(), "employee");
-            if (count > 0){
+            if (count > 0) {
                 startActivity(new Intent(this, LoginActivity.class));
             } else {
                 startActivity(new Intent(this, CreateAccountActivity.class));

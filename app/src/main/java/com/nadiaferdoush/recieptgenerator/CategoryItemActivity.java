@@ -43,6 +43,7 @@ public class CategoryItemActivity extends AppCompatActivity {
         ListView categoryList = (ListView) findViewById(R.id.category_list_view);
         mAdapter = new CategoryListAdapter(this, R.layout.category_list, categoryItems);
         categoryList.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
 
         categoryList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override

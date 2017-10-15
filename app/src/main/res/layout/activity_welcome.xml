@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:scaleType="centerCrop"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/background"/>
+
+    <TextView
+        android:id="@+id/tv_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="Welcome"
+        android:textSize="35sp"
+        android:textColor="#fcf5eb"
+        android:fontFamily="serif-monospace"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        android:padding="5dp"
+        android:layout_marginTop="40dp" />
+
+    <TextView
+        android:id="@+id/tv_middle"
+        android:layout_below="@+id/tv_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Make your billing easy with mPOS!"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#fff"
+        android:padding="8dp"
+        android:background="#70000000"
+        android:fontFamily="serif-monospace"/>
+
+
+    <Button
+        android:id="@+id/RegButton"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="serif-monospace"
+        android:text=" Register "
+        android:textSize="15sp"
+        android:textAllCaps="true"
+        android:textColor="#fcf5eb"
+        android:padding="0dp"
+        android:background="#70000000"
+        android:onClick="addRegisterClicked"
+        android:layout_marginBottom="10dp"
+        android:layout_above="@+id/LogInButton"
+        android:layout_alignStart="@+id/LogInButton" />
+
+    <Button
+        android:id="@+id/LogInButton"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text=" Log In "
+        android:fontFamily="serif-monospace"
+        android:textSize="15sp"
+        android:textAllCaps="true"
+        android:textColor="#fcf5eb"
+        android:background="#70000000"
+        android:onClick="addLogInClicked"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp" />
+
+</RelativeLayout>

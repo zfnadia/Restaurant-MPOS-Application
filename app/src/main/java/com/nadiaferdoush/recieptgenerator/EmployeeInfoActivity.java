@@ -118,7 +118,6 @@ public class EmployeeInfoActivity extends AppCompatActivity {
 
         final View v = LayoutInflater.from(this).inflate(R.layout.employee_info_input_form, null);
 
-
         final Spinner spinner = (Spinner) v.findViewById(R.id.select_category);
 
         List<String> jobTypes = new ArrayList<String>();
@@ -196,6 +195,4 @@ public class EmployeeInfoActivity extends AppCompatActivity {
             return v;
         }
     }
-
-
 }

@@ -10,7 +10,9 @@
         android:label="Blue Jays Inn POS"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".BillActivity">
+
+        <activity android:name=".WelcomeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,12 +20,16 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".BillActivity"
+            android:label="Create Bill" />
+        <activity
             android:name=".LoginActivity"
             android:label="Log In"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CreateAccountActivity"
-            android:label="Create Manager Account" />
+            android:label="Create Manager Account"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".CategoryItemActivity"
             android:label="Menu Categories"

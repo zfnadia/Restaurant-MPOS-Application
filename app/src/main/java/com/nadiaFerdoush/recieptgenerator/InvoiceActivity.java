@@ -32,37 +32,45 @@ public class InvoiceActivity extends AppCompatActivity {
         mAdapter = new InvoiceActivity.InvoiceListAdapter(this, R.layout.invoice_row, items);
         invoiceList.setAdapter(mAdapter);
 
+
         Bill bill = AppDatabase.getInstance(this).getBill(billId);
 
-        TextView grossAmountView = (TextView) findViewById(R.id.gross_amount);
-        grossAmountView.setText(String.format("%.2f", bill.getGrossAmount()));
+        View headerView = LayoutInflater.from(this).inflate(R.layout.invoice_header, null);
+        invoiceList.addHeaderView(headerView);
 
-        TextView vatAMountView = (TextView) findViewById(R.id.vat_amount);
-        vatAMountView.setText(String.format("%.2f", bill.getVatPt()));
-
-        TextView discountAmountView = (TextView) findViewById(R.id.discount);
-        discountAmountView.setText(String.format("%.2f", bill.getDiscountPt()));
-
-        TextView netAmountView = (TextView) findViewById(R.id.net_amount);
-        netAmountView.setText(String.format("%.2f", bill.getNetAmount()));
-
-        TextView paidAmountView = (TextView) findViewById(R.id.paid_amount);
-        paidAmountView.setText(String.format("%.2f", bill.getPaidAmount()));
-
-        TextView changeAmountView = (TextView) findViewById(R.id.change_amount);
-        changeAmountView.setText(String.format("%.2f", bill.getChangeAmount()));
-
-        TextView paymentMethodView = (TextView) findViewById(R.id.payment_method);
-        paymentMethodView.setText(new String[]{"", "Cash", "Cheque", "Credit Card", "Debit Card"}[bill.getPaymentType()]);
-
-        TextView timeView = (TextView) findViewById(R.id.time);
+        TextView timeView = (TextView) headerView.findViewById(R.id.time);
         timeView.setText(String.valueOf(bill.getTimeCreated()));
 
-        TextView tableNumView = (TextView) findViewById(R.id.table_no);
+        TextView tableNumView = (TextView) headerView.findViewById(R.id.table_no);
         tableNumView.setText("Table No : " + String.valueOf(bill.getTableNumber()));
 
-        TextView billIdView = (TextView) findViewById(R.id.bill_id);
+        TextView billIdView = (TextView) headerView.findViewById(R.id.bill_id);
         billIdView.setText("Bill Id : " + String.valueOf(billId));
+        
+
+        View footerView = LayoutInflater.from(this).inflate(R.layout.invoice_footer, null);
+        invoiceList.addFooterView(footerView);
+
+        TextView grossAmountView = (TextView) footerView.findViewById(R.id.gross_amount);
+        grossAmountView.setText(String.format("%.2f", bill.getGrossAmount()));
+
+        TextView vatAMountView = (TextView) footerView.findViewById(R.id.vat_amount);
+        vatAMountView.setText(String.format("%.2f", bill.getVatPt()));
+
+        TextView discountAmountView = (TextView) footerView.findViewById(R.id.discount);
+        discountAmountView.setText(String.format("%.2f", bill.getDiscountPt()));
+
+        TextView netAmountView = (TextView) footerView.findViewById(R.id.net_amount);
+        netAmountView.setText(String.format("%.2f", bill.getNetAmount()));
+
+        TextView paidAmountView = (TextView) footerView.findViewById(R.id.paid_amount);
+        paidAmountView.setText(String.format("%.2f", bill.getPaidAmount()));
+
+        TextView changeAmountView = (TextView) footerView.findViewById(R.id.change_amount);
+        changeAmountView.setText(String.format("%.2f", bill.getChangeAmount()));
+
+        TextView paymentMethodView = (TextView) footerView.findViewById(R.id.payment_method);
+        paymentMethodView.setText(new String[]{"", "Cash", "Cheque", "Credit Card", "Debit Card"}[bill.getPaymentType()]);
 
     }
 

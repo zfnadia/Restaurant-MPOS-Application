@@ -36,6 +36,11 @@ public class CreateAccountActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
         }
 
+        else {
+            startActivity(new Intent(this, WelcomeActivity.class));
+
+        }
+
     }
 
 }

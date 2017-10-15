@@ -17,7 +17,7 @@ import java.util.List;
 public class AppDatabase extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 4;
-    public static final String DATABASE_NAME = "myapp12.db";
+    public static final String DATABASE_NAME = "myapp14.db";
 
     private static AppDatabase instance = null; // = new AppDatabase()
     private final Context context;
@@ -47,6 +47,7 @@ public class AppDatabase extends SQLiteOpenHelper {
         values.put("available_time", category.getTime());
 
         this.getWritableDatabase().insert("item_category", null, values);
+
     }
 
     public List<Category> getCategoryItems() {
